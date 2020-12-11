@@ -9,22 +9,44 @@ import {FbAuthResponse} from '../../../shared/interfaces/fb-auth-response.interf
 @Injectable()
 
 export class AuthService {
+
+  readonly TOKEN_KEY = 'fb-token';
+  readonly TOKEN_EXP_KEY = 'fb-token-exp';
+
   constructor(private http: HttpClient) {
   }
 
-  get token(): string {
-    return '';
+  get token(): string | null {
+    const fbTokenExp = localStorage.getItem(this.TOKEN_EXP_KEY);
+    if (fbTokenExp) {
+      const expDate = new Date(fbTokenExp);
+      if (new Date() > expDate) {
+        this.logout();
+        return null;
+      }
+    } else {
+      this.logout();
+      return null;
+    }
+
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   login(user: User): Observable<any> {
-    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
+    user.returnSecureToken = true;
+    return this.http.post<FbAuthResponse>
+    (
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`,
+      user
+    )
       .pipe(
         tap(this.setToken)
       );
   }
 
   logout(): void {
-
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.TOKEN_EXP_KEY);
   }
 
   isAuthenticated(): boolean {
@@ -32,6 +54,8 @@ export class AuthService {
   }
 
   private setToken(response: FbAuthResponse): void {
-    console.log (response);
+    const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
+    localStorage.setItem(this.TOKEN_KEY, response.idToken);
+    localStorage.setItem(this.TOKEN_EXP_KEY, expDate.toString());
   }
 }

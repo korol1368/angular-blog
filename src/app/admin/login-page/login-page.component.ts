@@ -51,6 +51,7 @@ export class LoginPageComponent implements OnInit {
     const user: User = {
       email: this.form.value.email,
       password: this.form.value.password,
+      returnSecureToken: true
     };
 
     this.auth.login(user).subscribe(() => {
