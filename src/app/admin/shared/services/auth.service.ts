@@ -40,7 +40,7 @@ export class AuthService {
       user
     )
       .pipe(
-        tap(this.setToken)
+        tap(this.setToken.bind(this))
       );
   }
 

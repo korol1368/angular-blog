@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <button [disabled]="form.invalid"
+  <button [disabled]="form.invalid || submitted"
           type="submit"
           class="btn btn-primary">
     Войти
