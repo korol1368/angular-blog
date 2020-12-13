@@ -1,48 +1,41 @@
 <form class="card" [formGroup]="form" (ngSubmit)="submitFormLogin()">
   <h2>Войти в панель администратора</h2>
-  <div
-      [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
-      class="form-control"
-  >
+  <div [ngClass]="{invalid: getFormControl('email').touched && getFormControl('email').invalid}"
+       class="form-control">
     <label for="email">Email:</label>
     <input id="email" type="email" formControlName="email">
-    <div
-        *ngIf="form.get('email').touched && form.get('email').invalid"
-        class="validation"
-    >
-      <small *ngIf="form.get('email').errors.required">
+    <div *ngIf="getFormControl('email').touched && getFormControl('email').invalid && getFormControl('email').errors"
+         class="validation">
+      <small *ngIf="getFormControl('email').hasError('required')">
         Поле email не должно быть пустым
       </small>
-      <small *ngIf="form.get('email').errors.email">
+      <small *ngIf="getFormControl('email').hasError('email')">
         Поле email должно корректным
       </small>
     </div>
   </div>
 
-  <div
-      [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
-      class="form-control"
-  >
+  <div [ngClass]="{invalid: getFormControl('password').touched && getFormControl('password').invalid}"
+       class="form-control">
     <label for="password">Пароль:</label>
     <input id="password" type="password" formControlName="password">
-    <div
-        *ngIf="form.get('password').touched && form.get('password').invalid"
-        class="validation"
-    >
-      <small *ngIf="form.get('password').errors.required">
+    <div *ngIf="getFormControl('password').touched && getFormControl('password').invalid && getFormControl('password').errors"
+         class="validation">
+      <small *ngIf="getFormControl('password').hasError('required')">
         Поле password не может быть пустым
       </small>
-      <small *ngIf="form.get('password').errors.minlength">
+      <small *ngIf="getFormControl('password').hasError('minlength')">
         Поле password не может быть менее
-        {{form.get('password').errors.minlength.requiredLength}}
+        {{getFormControl('password').getError('minlength')['requiredLength']}}
         символов. Сейчас
-        {{form.get('password').errors.minlength.actualLength}}.
+        {{getFormControl('password').getError('minlength')['actualLength']}}
       </small>
     </div>
   </div>
 
-  <button
-      [disabled]="form.invalid"
-      type="submit"
-      class="btn btn-primary">Войти</button>
+  <button [disabled]="form.invalid"
+          type="submit"
+          class="btn btn-primary">
+    Войти
+  </button>
 </form>

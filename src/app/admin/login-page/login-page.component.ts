@@ -32,6 +32,10 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getFormControl(name: string): FormControl {
+    return (this.form.get(name) as FormControl);
+  }
+
   submitFormLogin(): void {
     console.log(this.form);
     if (this.form.invalid) {
