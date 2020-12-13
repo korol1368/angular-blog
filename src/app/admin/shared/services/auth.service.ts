@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../../../shared/interfaces/user.interface';
-import {Observable} from 'rxjs';
+import {Observable, Subject, throwError} from 'rxjs';
 import {environment} from '../../../../environments/environment';
-import {tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {FbAuthResponse} from '../../../shared/interfaces/fb-auth-response.interface';
 
 @Injectable()
 
 export class AuthService {
+  public error$: Subject<string> = new Subject<string>();
 
   readonly TOKEN_KEY = 'fb-token';
   readonly TOKEN_EXP_KEY = 'fb-token-exp';
@@ -40,7 +41,8 @@ export class AuthService {
       user
     )
       .pipe(
-        tap(this.setToken.bind(this))
+        tap(this.setToken.bind(this)),
+        catchError(this.handleError.bind(this))
       );
   }
 
@@ -51,6 +53,22 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.token;
+  }
+
+  private handleError(error: any): any {
+    const {message} = error.error.error;
+    switch (message) {
+      case 'INVALID_EMAIL':
+        this.error$.next('Неверный email');
+        break;
+      case 'INVALID_PASSWORD':
+        this.error$.next('Неверный пароль');
+        break;
+      case 'EMAIL_NOT_FOUND':
+        this.error$.next('Такого email нет');
+        break;
+    }
+    return throwError(error);
   }
 
   private setToken(response: FbAuthResponse): void {
