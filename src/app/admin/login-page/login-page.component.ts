@@ -32,12 +32,8 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get email(): FormControl {
-    return (this.form.get('email') as FormControl);
-  }
-
-  get password(): FormControl {
-    return (this.form.get('password') as FormControl);
+  getFormControl(name: string): FormControl {
+    return (this.form.get(name) as FormControl);
   }
 
   submitFormLogin(): void {
