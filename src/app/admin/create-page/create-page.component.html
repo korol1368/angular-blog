@@ -12,8 +12,9 @@
     </div>
   </div>
 
-  <div>
+  <div class="form-control">
     <label> Контент поста:</label>
+    <quill-editor></quill-editor>
   </div>
 
   <div [ngClass]="{invalid: getFormControl('author').touched && getFormControl('author').invalid}"
