@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {PostsService} from '../shared/services/posts.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPageComponent implements OnInit {
 
-  constructor() { }
+  posts$ = this.postsService.getAll();
 
-  ngOnInit(): void {
+  constructor(
+    private postsService: PostsService
+  ) {
   }
 
+  ngOnInit(): void {
+    // this.postsService.getAll().subscribe((response) => {
+
+    // });
+  }
+
+  removePost(id: string): void {
+  }
 }

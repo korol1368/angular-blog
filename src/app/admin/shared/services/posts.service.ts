@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Post} from '../../../shared/interfaces/post.interface';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
-import {map} from 'rxjs/operators';
+import {delay, map} from 'rxjs/operators';
 import {FbCreateResponse} from '../../../shared/interfaces/fb-create-response.interface';
 
 @Injectable()
@@ -27,5 +27,23 @@ export class PostsService {
         }
       )
     );
+  }
+
+  getAll(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.fbDbUrl}/posts.json`)
+      .pipe(
+        delay(1000),
+        map((response: {[key: string]: any}) => {
+          const posts: Post[] = [];
+          for (const [id, data] of Object.entries(response)) {
+            posts.push({
+              ...data,
+              id,
+              date: new Date(data.date)
+            });
+          }
+          return posts;
+        })
+      );
   }
 }
