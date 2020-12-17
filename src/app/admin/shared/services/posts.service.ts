@@ -33,7 +33,7 @@ export class PostsService {
     return this.http.get<Post[]>(`${environment.fbDbUrl}/posts.json`)
       .pipe(
         delay(1000),
-        map((response: {[key: string]: any}) => {
+        map((response: { [key: string]: any }) => {
           const posts: Post[] = [];
           for (const [id, data] of Object.entries(response)) {
             posts.push({
@@ -45,5 +45,9 @@ export class PostsService {
           return posts;
         })
       );
+  }
+
+  removePost(id: string): Observable<void> {
+    return this.http.delete<void>(`${environment.fbDbUrl}/posts/${id}.json`);
   }
 }
