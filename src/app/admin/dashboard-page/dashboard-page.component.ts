@@ -9,6 +9,7 @@ import {PostsService} from '../shared/services/posts.service';
 export class DashboardPageComponent implements OnInit {
 
   posts$ = this.postsService.getAll();
+  searchStr = '';
 
   constructor(
     private postsService: PostsService
