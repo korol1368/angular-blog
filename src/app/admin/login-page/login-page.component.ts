@@ -42,6 +42,8 @@ export class LoginPageComponent implements OnInit {
     this.route.queryParams.subscribe((params: Params) => {
       if (params.loginAgain){
         this.message = 'Авторизуйтесь';
+      } else if (params.authFailed){
+        this.message = 'Сессия истекла. Введите данные заново.';
       }
     });
   }
@@ -51,7 +53,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   submitFormLogin(): void {
-    console.log(this.form);
     if (this.form.invalid) {
       return;
     }
