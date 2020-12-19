@@ -39,6 +39,7 @@ export class CreatePageComponent implements OnInit {
   }
 
   submitFormPost(): void {
+    this.form.markAllAsTouched();
     if (this.form.invalid) {
       return;
     }
