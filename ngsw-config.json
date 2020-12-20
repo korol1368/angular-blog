@@ -33,7 +33,7 @@
   "dataGroups": [
     {
       "urls": [
-        "https://angular-blog-b162b-default-rtdb.europe-west1.firebasedatabase.app"
+        "https://angular-blog-b162b-default-rtdb.europe-west1.firebasedatabase.app/**"
       ],
       "name": "firebase-posts",
       "cacheConfig": {
