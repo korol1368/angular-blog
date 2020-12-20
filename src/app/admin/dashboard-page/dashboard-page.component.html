@@ -20,7 +20,7 @@
         <td>{{post.id}}</td>
         <td>{{post.author}}</td>
         <td>{{post.title}}</td>
-        <td>{{post.date}}</td>
+        <td>{{post.date | date:'medium':undefined:'ru'}}</td>
         <td>
           <button
               [routerLink]="['/admin', 'post', post.id, 'edit']"
